@@ -29,13 +29,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   double _firstOperand = 0;
   String _operator = '';
   bool _shouldResetDisplay = false;
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _startBackgroundMusic();
   }
 
-    void _startBackgroundMusic() async {
+  void _startBackgroundMusic() async {
     await _audioPlayer.setReleaseMode(ReleaseMode.loop);
     await _audioPlayer.setVolume(0.4);
-    // AssetSource automatycznie szuka pliku wskazanego w pubspec.yaml
-    await _audioPlayer.play(AssetSource('music.mp3'));
+    // PODMIEŃ NAZWĘ NA SWÓJ PLIK DŹWIĘKOWY
+    await _audioPlayer.play(AssetSource('nurek.mp3'));
   }
 
   void _toggleMusic() async {
@@ -145,16 +153,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Tło
+          // PODMIEŃ NAZWĘ NA SWÓJ PLIK GRAFICZNY
           Image.asset(
-  'ciulik.jpeg',
-  fit: BoxFit.cover,
-),
+            'ciulik.jpeg',
+            fit: BoxFit.cover,
+          ),
           Container(color: Colors.black.withOpacity(0.4)),
           SafeArea(
             child: Column(
               children: [
-                // Górna belka z przyciskiem wyciszania
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                   child: Row(
@@ -174,7 +181,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     ],
                   ),
                 ),
-                // Ekran kalkulatora
                 Expanded(
                   flex: 3,
                   child: Padding(
@@ -211,7 +217,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     ),
                   ),
                 ),
-                // Klawiatura
                 Expanded(
                   flex: 7,
                   child: Padding(
