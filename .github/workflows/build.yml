@@ -20,6 +20,9 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Wygeneruj pliki Androida
+        run: flutter create . --platforms=android
+
       - name: Pobierz pakiety
         run: flutter pub get
 
