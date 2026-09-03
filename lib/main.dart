@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() => runApp(const CalculatorApp());
 
@@ -28,6 +29,44 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   double _firstOperand = 0;
   String _operator = '';
   bool _shouldResetDisplay = false;
+
+  // Odtwarzacz muzyki
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = true;
+
+  // Przykładowy darmowy podkład lofi z sieci
+  final String _musicUrl =
+      'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3';
+
+  @override
+  void initState() {
+    super.initState();
+    _startBackgroundMusic();
+  }
+
+  void _startBackgroundMusic() async {
+    // Ustawienie zapętlenia w nieskończoność
+    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+    await _audioPlayer.setVolume(0.4); // Głośność 40%
+    await _audioPlayer.play(UrlSource(_musicUrl));
+  }
+
+  void _toggleMusic() async {
+    if (_isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.resume();
+    }
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   void _onButtonPressed(String value) {
     setState(() {
@@ -85,7 +124,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
             child: Material(
               color: customColor ?? Colors.white.withOpacity(0.12),
               child: InkWell(
@@ -119,23 +158,44 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // Tło
           Image.network(
-            'https://images.unsplash.com/photo-1569538120634-f8215ee2c5d0?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80',
             fit: BoxFit.cover,
           ),
-          Container(color: Colors.black.withOpacity(0.5)),
+          Container(color: Colors.black.withOpacity(0.4)),
           SafeArea(
             child: Column(
               children: [
-                // Ekran wyniku
+                // Górna belka z przyciskiem wyciszania
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Kalkulator',
+                        style: TextStyle(color: Colors.white70, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          _isPlaying ? Icons.volume_up : Icons.volume_off,
+                          color: _isPlaying ? Colors.tealAccent : Colors.white54,
+                        ),
+                        onPressed: _toggleMusic,
+                      ),
+                    ],
+                  ),
+                ),
+                // Ekran kalkulatora
                 Expanded(
                   flex: 3,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -164,7 +224,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     ),
                   ),
                 ),
-                // Klawiatura - każdy wiersz jest elastyczny
+                // Klawiatura
                 Expanded(
                   flex: 7,
                   child: Padding(
