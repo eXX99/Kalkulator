@@ -147,7 +147,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         children: [
           // Tło
           Image.asset(
-  'bg.jpg',
+  'ciulik.jpeg',
   fit: BoxFit.cover,
 ),
           Container(color: Colors.black.withOpacity(0.4)),
