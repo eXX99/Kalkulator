@@ -29,26 +29,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   double _firstOperand = 0;
   String _operator = '';
   bool _shouldResetDisplay = false;
-
-  // Odtwarzacz muzyki
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isPlaying = true;
-
-  // Przykładowy darmowy podkład lofi z sieci
-  final String _musicUrl =
-      'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3';
-
-  @override
-  void initState() {
-    super.initState();
-    _startBackgroundMusic();
   }
 
-  void _startBackgroundMusic() async {
-    // Ustawienie zapętlenia w nieskończoność
+    void _startBackgroundMusic() async {
     await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    await _audioPlayer.setVolume(0.4); // Głośność 40%
-    await _audioPlayer.play(UrlSource(_musicUrl));
+    await _audioPlayer.setVolume(0.4);
+    // AssetSource automatycznie szuka pliku wskazanego w pubspec.yaml
+    await _audioPlayer.play(AssetSource('music.mp3'));
   }
 
   void _toggleMusic() async {
@@ -159,10 +146,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         fit: StackFit.expand,
         children: [
           // Tło
-          Image.network(
-            'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80',
-            fit: BoxFit.cover,
-          ),
+          Image.asset(
+  'bg.jpg',
+  fit: BoxFit.cover,
+),
           Container(color: Colors.black.withOpacity(0.4)),
           SafeArea(
             child: Column(
