@@ -23,6 +23,10 @@ jobs:
       - name: Wygeneruj pliki Androida
         run: flutter create . --platforms=android
 
+      - name: Dodaj uprawnienie do Internetu
+        run: |
+          sed -i '/<application/i <uses-permission android:name="android.permission.INTERNET"\/>' android/app/src/main/AndroidManifest.xml
+
       - name: Pobierz pakiety
         run: flutter pub get
 
@@ -34,4 +38,3 @@ jobs:
         with:
           name: Kalkulator-APK
           path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-          
