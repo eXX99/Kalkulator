@@ -15,6 +15,4 @@ dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - nurek.mp3
-    - ciulik.jpeg
-    
+    - assets/
