@@ -40,11 +40,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void _startBackgroundMusic() async {
-    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    await _audioPlayer.setVolume(0.4);
-    // PODMIEŃ NAZWĘ NA SWÓJ PLIK DŹWIĘKOWY
-    await _audioPlayer.play(AssetSource('nurek.mp3'));
+  await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+  await _audioPlayer.setVolume(0.5);
+  await _audioPlayer.play(AssetSource('nurek.mp3')); 
+  // audioplayers SAM wstawi 'assets/' przed 'nurek.mp3'
   }
+
 
   void _toggleMusic() async {
     if (_isPlaying) {
@@ -153,10 +154,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // PODMIEŃ NAZWĘ NA SWÓJ PLIK GRAFICZNY
           Image.asset(
-            'ciulik.jpeg',
-            fit: BoxFit.cover,
+            'assets/ciulik.jpeg',
+            fit: BoxFit.contain,
+            alignment: Alignment.center,
           ),
           Container(color: Colors.black.withOpacity(0.4)),
           SafeArea(
